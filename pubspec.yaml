@@ -13,6 +13,9 @@ environment:
   sdk: ">=2.0.0-dev.68.0 <3.0.0"
 
 dependencies:
+  flutter_slidable: ^0.4.9
+  flutter_swiper : ^1.1.1
+  sliver_fab: ^1.0.0
   fancy_bottom_navigation: ^0.3.2
   flutter_easyrefresh: ^1.2.4
   dio: 2.0.0

@@ -8,6 +8,7 @@ import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
 class MyApp extends StatefulWidget {
   @override
   MyAppState createState() => new MyAppState();
+  
 }
 
 class MyAppState extends State<MyApp> {

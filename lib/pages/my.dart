@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:sliver_fab/sliver_fab.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 
 class My extends StatefulWidget {
   @override
@@ -8,69 +10,101 @@ class My extends StatefulWidget {
 class MyState extends State<My> {
   @override
   Widget build(BuildContext context) {
+    double media = ((MediaQuery.of(context).size.width - 100) / 2);
     return new MaterialApp(
-      home: new Scaffold(
-          appBar: new AppBar(
-            title: new Text("我的"),
-          ),
-          body: Column(
-            children: <Widget>[
-              Stack(
-                alignment: const FractionalOffset(0.5, 0.5), //方法一
-                children: <Widget>[
-                  Container(
-                    child: Image.asset(
-                      'images/lake.jpg',
-                      height: 200,
-                      fit: BoxFit.fitWidth,
-                    ),
-                    height: 200,
-                    width: MediaQuery.of(context).size.width,
-                  ),
-                  Positioned(
-                      child: Column(
-                    children: <Widget>[
-                      new ClipOval(
-                        child: new FadeInImage.assetNetwork(
-                          placeholder: "images/lake.jpg", //预览图
-                          fit: BoxFit.fill,
-                          image:
-                              "http://47.244.57.219/upload_d141c4f829b5d3580515ecb0c7ef1cc7.jpeg",
-                          width: 60.0,
-                          height: 60.0,
-                        ),
-                      ),
-                      Container(
-                        child: Text(
-                          "Dingkun",
-                          style: TextStyle( fontSize: 16.0,color: Colors.white),
-                        ),
-                      ),
-                    ],
-                  ))
-                ],
+      home: new Scaffold(body: new Builder(builder: (context) {
+        return new SliverFab(
+          floatingWidget: Container(
+            height: 100,
+            width: 100,
+            margin: EdgeInsets.only(left: 15.0),
+            child: ClipOval(
+              child: Image.asset(
+                "images/lake.jpg",
+                fit: BoxFit.fill,
               ),
-              Card(
-                elevation: 5.0,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ListTile(
-                      title: Row(
-                        children: <Widget>[
-                          const FlutterLogo(),
-                          const Expanded(
-                            child: Text('资料设置'),
-                          ),
-                          const Icon(Icons.keyboard_arrow_right),
-                        ],
-                      ),
-                    ),
-                  ],
+            ),
+            decoration: BoxDecoration(
+              color: Color.fromRGBO(255, 255, 255, 0.7),
+              shape: BoxShape.circle,
+              border: Border.all(
+                color: Color.fromRGBO(255, 255, 255, 0.1),
+                width: 8.0,
+              ),
+            ),
+          ),
+          floatingPosition: FloatingPosition(left: media - 10, top: -22),
+          expandedHeight: 256.0,
+          slivers: <Widget>[
+            SliverAppBar(
+              expandedHeight: 256.0,
+              pinned: true,
+              title: Text("我的"),
+              flexibleSpace: FlexibleSpaceBar(
+                background: Image.asset(
+                  "images/lake.jpg",
+                  fit: BoxFit.cover,
                 ),
-              )
-            ],
-          )),
+              ),
+            ),
+            SliverList(
+              delegate: SliverChildListDelegate([
+                Container(
+                  child: new Swiper(
+                    itemBuilder: (BuildContext context, int index) {
+                      return ClipRRect(
+                        borderRadius:
+                            new BorderRadius.all(new Radius.circular(20)),
+                        child: new Image.asset(
+                          'images/lake.jpg',
+                          fit: BoxFit.fill,
+                        ),
+                      );
+                    },
+                    itemCount: 10,
+                    itemWidth: 500.0,
+                    itemHeight: 400.0,
+                    layout: SwiperLayout.TINDER,
+                  ),
+                ),
+                ListTile(
+                  title: Row(
+                    children: <Widget>[
+                      const FlutterLogo(),
+                      const Expanded(
+                        child: Text('资料设置'),
+                      ),
+                      const Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
+                ),
+                ListTile(
+                  title: Row(
+                    children: <Widget>[
+                      const FlutterLogo(),
+                      const Expanded(
+                        child: Text('我的消息'),
+                      ),
+                      const Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
+                ),
+                ListTile(
+                  title: Row(
+                    children: <Widget>[
+                      const FlutterLogo(),
+                      const Expanded(
+                        child: Text('收到的评论'),
+                      ),
+                      const Icon(Icons.keyboard_arrow_right),
+                    ],
+                  ),
+                ),
+              ]),
+            ),
+          ],
+        );
+      })),
     );
   }
 }

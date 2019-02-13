@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
+import '../components/recentList.dart';
 import '../components/friendsList.dart';
+
 import 'dart:convert';
 import 'package:dio/dio.dart';
 
@@ -24,7 +27,7 @@ class FriendsState extends State<Friends> {
         if (!mounted) {
           return;
         }
-        var arr=AllCategory;
+        var arr = AllCategory;
         arr.addAll(res['result']['data']);
         setState(() {
           AllCategory = arr;
@@ -65,20 +68,31 @@ class FriendsState extends State<Friends> {
     return new DefaultTabController(
       length: 2,
       child: new Scaffold(
+        backgroundColor: Colors.white,
         appBar: new AppBar(
           title: new Text("好友"),
-          bottom: new TabBar(
-            tabs: tabs(),
-            isScrollable: true,
-            indicatorSize: TabBarIndicatorSize.tab,
-            labelColor: Colors.white,
-            labelStyle: new TextStyle(fontSize: 16.0),
-            unselectedLabelColor: Colors.black,
-            unselectedLabelStyle: new TextStyle(fontSize: 12.0),
-          ),
         ),
-        body: new TabBarView(
-          children: [FriendsList(),FriendsList()],
+        body: Column(
+          children: <Widget>[
+            Container(
+              height: 38.0,
+              child: new TabBar(
+                tabs: tabs(),
+                isScrollable: true,
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelColor: Colors.black,
+                labelStyle: new TextStyle(fontSize: 16.0),
+                unselectedLabelColor: Colors.grey,
+                unselectedLabelStyle: new TextStyle(fontSize: 12.0),
+              ),
+//              padding: EdgeInsets.only(top: 10),
+            ),
+            Expanded(
+              child: new TabBarView(
+                children: [RecentList(), FriendsList()],
+              ),
+            )
+          ],
         ),
       ),
     );

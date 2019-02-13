@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import '../components/list.dart';
 import 'dart:convert';
 import 'package:dio/dio.dart';
+class Home extends StatefulWidget{
 
-class Home extends StatefulWidget {
   @override
   HomeState createState() => new HomeState();
 }
 
-class HomeState extends State<Home> {
+class HomeState extends State<Home>  with AutomaticKeepAliveClientMixin{
+  @override
+  bool get wantKeepAlive => true;
   List AllCategory = [
     {'name': '全部', 'categoryId': -1},
   ];
@@ -23,7 +25,7 @@ class HomeState extends State<Home> {
         if (!mounted) {
           return;
         }
-        var arr=AllCategory;
+        var arr = AllCategory;
         arr.addAll(res['result']['data']);
         setState(() {
           AllCategory = arr;
@@ -44,7 +46,7 @@ class HomeState extends State<Home> {
     List<Widget> tiles = []; //先建一个数组用于存放循环生成的widget
     Widget content; //单独一个widget组件，用于返回需要生成的内容widget
     for (var item in AllCategory) {
-      tiles.add(new PostList(categoryId:item['categoryId']) );
+      tiles.add(new PostList(categoryId: item['categoryId']));
     }
     return tiles;
   }
@@ -64,22 +66,33 @@ class HomeState extends State<Home> {
     return new DefaultTabController(
       length: 10,
       child: new Scaffold(
-        appBar: new AppBar(
-          title: new Text("首页"),
-          bottom: new TabBar(
-            tabs: tabs(),
-            isScrollable: true,
-            indicatorSize: TabBarIndicatorSize.tab,
-            labelColor: Colors.white,
-            labelStyle: new TextStyle(fontSize: 16.0),
-            unselectedLabelColor: Colors.black,
-            unselectedLabelStyle: new TextStyle(fontSize: 12.0),
+          appBar: new AppBar(
+            title: new Text("首页"),
           ),
-        ),
-        body: new TabBarView(
-          children: buildGrid(),
-        ),
-      ),
+          body: Container(
+            color: Colors.white,
+            child: Column(
+              children: <Widget>[
+                Container(
+                  height: 38.0,
+                  child: new TabBar(
+                    tabs: tabs(),
+                    isScrollable: true,
+                    indicatorSize: TabBarIndicatorSize.tab,
+                    labelColor: Colors.black,
+                    labelStyle: new TextStyle(fontSize: 16.0),
+                    unselectedLabelColor: Colors.grey,
+                    unselectedLabelStyle: new TextStyle(fontSize: 12.0),
+                  ),
+                ),
+                Expanded(
+                  child: new TabBarView(
+                    children: buildGrid(),
+                  ),
+                )
+              ],
+            ),
+          )),
     );
   }
 }

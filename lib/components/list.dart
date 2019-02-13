@@ -17,7 +17,9 @@ class PostList extends StatefulWidget {
   }
 }
 
-class PostListState extends State<PostList> {
+class PostListState extends State<PostList> with AutomaticKeepAliveClientMixin {
+  @override
+  bool get wantKeepAlive => true;
   GlobalKey<EasyRefreshState> _easyRefreshKey =
       new GlobalKey<EasyRefreshState>();
   GlobalKey<RefreshHeaderState> _headerKey =
@@ -84,7 +86,16 @@ class PostListState extends State<PostList> {
       }
     }
   }
-
+  static SlideTransition createTransition(
+      Animation<double> animation, Widget child) {
+    return new SlideTransition(
+      position: new Tween<Offset>(
+        begin: const Offset(1.0, 0.0),
+        end: const Offset(0.0, 0.0),
+      ).animate(animation),
+      child: child,
+    );
+  }
   @override
   void initState() {
     // TODO: implement initState
@@ -154,7 +165,7 @@ class PostListState extends State<PostList> {
       child: Column(
         children: <Widget>[
           Container(
-            padding: EdgeInsetsDirectional.fromSTEB(20, 0, 10, 30),
+            padding: EdgeInsetsDirectional.fromSTEB(20, 0, 20, 30),
             child: Card(
               elevation: 10.0,
               child: Column(
@@ -171,16 +182,39 @@ class PostListState extends State<PostList> {
                     ),
                     onTap: () {
                       print('BUtton was tapped');
-                      Navigator.of(context)
-                          .push(new MaterialPageRoute(builder: (_) {
-                        return new PostDetail(id: data['id']);
-                      }));
+                      Navigator.push<String>(
+                          context,
+                          new PageRouteBuilder(pageBuilder: (BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation) {
+                            // 跳转的路由对象
+                            return new PostDetail(id: data['id']);
+                          }, transitionsBuilder: (
+                              BuildContext context,
+                              Animation<double> animation,
+                              Animation<double> secondaryAnimation,
+                              Widget child,
+                              ) {
+                            return PostListState
+                                .createTransition(animation, child);
+                          }));
+//                      Navigator.of(context)
+//                          .push(new MaterialPageRoute(builder: (_) {
+//                        return new PostDetail(id: data['id']);
+//                      }));
                     },
                   ),
                   ListTile(
-//              leading: Icon(Icons.album),
-                    title: Text('${data['title']}'),
-                    subtitle: Text('${data['describes']}'),
+                    title: Text(
+                      '${data['title']}',
+                      style: TextStyle(height: 2),
+                    ),
+                    subtitle: Container(
+                      margin: EdgeInsets.only(top: 10, bottom: 10),
+                      child: Text(
+                        '${data['describes']}',
+                      ),
+                    ),
                   ),
                 ],
               ),
@@ -257,7 +291,7 @@ class PostListState extends State<PostList> {
               ],
             ),
             decoration: BoxDecoration(
-              border: Border(top: BorderSide(color: Colors.black26)),
+              border: Border(top: BorderSide(color: Colors.black12)),
             ),
             padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
           )

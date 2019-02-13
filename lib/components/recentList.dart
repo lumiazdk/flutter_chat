@@ -3,12 +3,12 @@ import 'dart:convert';
 import 'package:dio/dio.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
-class FriendsList extends StatefulWidget {
+class RecentList extends StatefulWidget {
   @override
-  FriendsListState createState() => new FriendsListState();
+  RecentListState createState() => new RecentListState();
 }
 
-class FriendsListState extends State<FriendsList> {
+class RecentListState extends State<RecentList> {
   List list = [
     {"name": 'zdk', "create_time": '123344', "last_message": 'qwer'},
   ]; //列表要展示的数据
