@@ -113,107 +113,157 @@ class PostListState extends State<PostList> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-      body: Center(
-          child: new EasyRefresh(
-        key: _easyRefreshKey,
-        refreshHeader: BezierCircleHeader(
-          key: _headerKey,
-          color: Theme.of(context).scaffoldBackgroundColor,
+      body: Container(
+        child: new EasyRefresh(
+          key: _easyRefreshKey,
+          refreshHeader: BezierCircleHeader(
+            key: _headerKey,
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          refreshFooter: BezierBounceFooter(
+            key: _footerKey,
+            color: Theme.of(context).scaffoldBackgroundColor,
+          ),
+          child: new ListView.builder(
+              //ListView的Item
+              itemCount: list.length,
+              itemBuilder: (BuildContext context, int index) {
+                return _renderRow(index);
+              }),
+          onRefresh: () async {
+            await new Future.delayed(const Duration(seconds: 1), () {
+              getData('up');
+            });
+          },
+          loadMore: () async {
+            await new Future.delayed(const Duration(seconds: 1), () {
+              getData('down');
+            });
+          },
         ),
-        refreshFooter: BezierBounceFooter(
-          key: _footerKey,
-          color: Theme.of(context).scaffoldBackgroundColor,
-        ),
-        child: new ListView.builder(
-            //ListView的Item
-            itemCount: list.length,
-            itemBuilder: (BuildContext context, int index) {
-              return _renderRow(index);
-            }),
-        onRefresh: () async {
-          await new Future.delayed(const Duration(seconds: 1), () {
-            getData('up');
-          });
-        },
-        loadMore: () async {
-          await new Future.delayed(const Duration(seconds: 1), () {
-            getData('down');
-          });
-        },
-      )),
+        decoration: BoxDecoration(color: Colors.black12),
+      ),
     );
   }
 
   Widget _renderRow(int index) {
     var data = list[index];
-    return Column(
-      children: <Widget>[
-        Container(
-          padding: EdgeInsetsDirectional.fromSTEB(20, 0, 10, 10),
-          child: Card(
-            elevation: 8.0,
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: <Widget>[
-                GestureDetector(
-                  child: Container(
-                    child: Image.network(
-                      data['background'],
-                      fit: BoxFit.fitWidth,
-                      width: MediaQuery.of(context).size.width,
-                      height: 211,
+    return Container(
+      decoration: BoxDecoration(color: Colors.white),
+      padding: EdgeInsets.fromLTRB(0, 10, 0, 0),
+      child: Column(
+        children: <Widget>[
+          Container(
+            padding: EdgeInsetsDirectional.fromSTEB(20, 0, 10, 30),
+            child: Card(
+              elevation: 10.0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  GestureDetector(
+                    child: Container(
+                      child: Image.network(
+                        data['background'],
+                        fit: BoxFit.fitWidth,
+                        width: MediaQuery.of(context).size.width,
+                        height: 211,
+                      ),
                     ),
+                    onTap: () {
+                      print('BUtton was tapped');
+                      Navigator.of(context)
+                          .push(new MaterialPageRoute(builder: (_) {
+                        return new PostDetail(id: data['id']);
+                      }));
+                    },
                   ),
-                  onTap: () {
-                    print('BUtton was tapped');
-                    Navigator.of(context)
-                        .push(new MaterialPageRoute(builder: (_) {
-                      return new PostDetail(id: data['id']);
-                    }));
-                  },
-                ),
-                ListTile(
+                  ListTile(
 //              leading: Icon(Icons.album),
-                  title: Text('${data['title']}'),
-                  subtitle: Text('${data['describes']}'),
-                ),
-              ],
+                    title: Text('${data['title']}'),
+                    subtitle: Text('${data['describes']}'),
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-        Row(
-          children: <Widget>[
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[Icon(Icons.home), Text('点赞'), Text('(35)')],
-              ),
-              flex: 1,
+          Container(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.favorite,
+                        color: Colors.blueGrey,
+                      ),
+                      Text(
+                        '(35)',
+                        style: TextStyle(color: Colors.blueGrey),
+                      )
+                    ],
+                  ),
+                  flex: 1,
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.remove_red_eye,
+                        color: Colors.blueGrey,
+                      ),
+                      Text(
+                        '(35)',
+                        style: TextStyle(color: Colors.blueGrey),
+                      )
+                    ],
+                  ),
+                  flex: 1,
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.comment,
+                        color: Colors.blueGrey,
+                      ),
+                      Text(
+                        '(35)',
+                        style: TextStyle(color: Colors.blueGrey),
+                      )
+                    ],
+                  ),
+                  flex: 1,
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      Icon(
+                        Icons.reply,
+                        color: Colors.blueGrey,
+                      ),
+                      Text(
+                        '(35)',
+                        style: TextStyle(color: Colors.blueGrey),
+                      )
+                    ],
+                  ),
+                  flex: 1,
+                )
+              ],
             ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[Icon(Icons.home), Text('点赞'), Text('(35)')],
-              ),
-              flex: 1,
+            decoration: BoxDecoration(
+              border: Border(top: BorderSide(color: Colors.black26)),
             ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[Icon(Icons.home), Text('点赞'), Text('(35)')],
-              ),
-              flex: 1,
-            ),
-            Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[Icon(Icons.home), Text('点赞'), Text('(35)')],
-              ),
-              flex: 1,
-            )
-          ],
-        )
-      ],
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 10),
+          )
+        ],
+      ),
+      margin: EdgeInsets.fromLTRB(0, 0, 0, 10),
     );
   }
 }
