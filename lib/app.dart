@@ -4,7 +4,6 @@ import 'pages/home.dart';
 import 'pages/friends.dart';
 import 'pages/my.dart';
 import 'package:fancy_bottom_navigation/fancy_bottom_navigation.dart';
-
 class MyApp extends StatefulWidget {
   @override
   MyAppState createState() => new MyAppState();
@@ -27,6 +26,10 @@ class MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return new MaterialApp(
+      routes: <String, WidgetBuilder> {
+        '/MyApp': (BuildContext context) => new MyApp(),
+
+      },
       home: new Scaffold(
         body: _getPage(),
         bottomNavigationBar: new Material(

@@ -72,6 +72,7 @@ class FriendsState extends State<Friends> {
         appBar: new AppBar(
           title: new Text("好友"),
         ),
+        endDrawer: Drawer(),
         body: Column(
           children: <Widget>[
             Container(

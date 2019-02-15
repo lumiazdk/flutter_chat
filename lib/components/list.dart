@@ -41,8 +41,9 @@ class PostListState extends State<PostList> with AutomaticKeepAliveClientMixin {
         page = 1;
       });
     } else {
+      var currentPage=page+1;
       setState(() {
-        page = page++;
+        page = currentPage;
         isPerformingRequest = true;
       });
     }
